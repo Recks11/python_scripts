@@ -36,8 +36,8 @@ def parse_data(dfs):
     for i in range(len(data)):
         dt = data[i]
         wrd = '\'' + str(data[i]) + '\''
-        # if type(dt) != str: # uncomment for python3.x
-        if type(dt) != unicode:
+        if type(dt) != str:  # uncomment for python3.x
+            # if type(dt) != unicode:
             wrd = str(data[i])
 
         if i == len(data) - 1:
@@ -93,24 +93,26 @@ class CassandraDataInserter:
 
     def execute_command(self, q):
         c_query = c_arr(self.api, '-e', q)
-        print_out('Executing ' + q)
+        print_out('Executing ' + q, BColors.WARNING)
         process = subprocess.Popen(args=c_query,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE,
                                    universal_newlines=True)
         stdout, stderr = process.communicate()
         if len(stderr) == 0:
-            print(stdout)
-            print_out('SUCCESS')
+            return True
         else:
             print_out('Error: ' + stderr, BColors.FAIL)
+            return False
 
     def execute(self, command='INSERT'):
         df = self.data
         for i in range(len(self.data)):
             try:
                 query = self.create_single_query(df.iloc[i])
-                self.execute_command(query)
+                response = self.execute_command(query)
+                if response:
+                    print_out('Successfully inserted' + df.iloc[i])
             except Exception as ex:
                 if ex.args[1] == 'No such file or directory':
                     print_out('Error: cqlsh not installed, please check your cassandraDB installation', BColors.FAIL)
@@ -120,7 +122,7 @@ class CassandraDataInserter:
         self.show_all()
 
     def show_all(self):
-        self.execute_command(c('SELECT', '*', 'FROM', self.get_db()))
+        _ = self.execute_command(c('SELECT', '*', 'FROM', self.get_db()))
 
     def show_commands(self):
         for i in range(len(self.data)):
@@ -146,7 +148,8 @@ class BColors:
 
 
 def print_out(word, color=BColors.OKGREEN):
-    print(color + word + BColors.ENDC)
+    if verbose or color is BColors.OKGREEN:
+        print(color + word + BColors.ENDC)
 
 
 def welcome_text():
@@ -165,9 +168,13 @@ def welcome_text():
               'but we are somehow meant to insert tons of data to a database')
 
 
+verbose = False
+
 if __name__ == '__main__':
     arguments = sys.argv
-    args_dict = None
+    args_dict = {}
+    if arguments.__contains__('-v') | arguments.__contains__('-V'):
+        verbose = True
     try:
         args_dict = {
             'KEYSPACE': arguments[arguments.index('-k') + 1],
