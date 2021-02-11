@@ -90,21 +90,25 @@ class CassandraDataInserter:
     def create_single_query(self, data, query_type=None):
         return c('INSERT', 'INTO', self.get_db(), self.cols_str, 'VALUES', parse_data(data))
 
-    def execute(self, command):
+    def execute(self, command='INSERT'):
         for i in range(len(self.data)):
             df = self.data
             try:
-                process = subprocess.Popen(args=c_arr(self.api, '-e', self.create_single_query(df.iloc[i])),
+                query = self.create_single_query(df.iloc[i])
+                print_out('Executing '+ query)
+                process = subprocess.Popen(args=c_arr(self.api, '-e', query),
                                            stdout=subprocess.PIPE,
                                            stderr=subprocess.PIPE,
                                            universal_newlines=True)
                 stdout, stderr = process.communicate()
                 if len(stderr) == 0:
                     print(stdout)
+                    print_out('SUCCESS')
                 else:
                     print(stderr)
-            except Exception as ex:
-                print(ex)
+            except FileNotFoundError as ex:
+                if ex.filename == self.api:
+                    print_out('Error: cqlsh not installed, please check your cassandraDB installation', BColors.WARNING)
                 break
 
     def show_commands(self):
@@ -118,17 +122,36 @@ class CassandraDataInserter:
             print(self.create_single_query(df))
 
 
+class BColors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
+def print_out(word, color=BColors.OKGREEN):
+    print(color + word + BColors.ENDC)
+
+
 def welcome_text():
-    print('Usage: python datainserter -k [KEYSPACE] -t [TABLE NAME] -f [PATH TO CSV/JSON FILE]')
-    print('insert data into cassandra db on unix systems from a JSON or CSV file')
-    print('')
-    print('To use this script, you should have created your keyspace and Table name')
-    print('   -k     the keyspace of the collection')
-    print('   -t     the keyspace table name to insert the data')
-    print('')
-    print('Made by Rex Ijiekhuamen')
-    print('Because the University\'s VMS do not have internet access \n' +
-          'but we are somehow meant to insert tons of data to a database')
+    print_out('Usage: python cassandrainserter -k [KEYSPACE] -t [TABLE NAME] -f [PATH TO CSV/JSON FILE]')
+    print_out('insert data into cassandra db on unix systems from a JSON or CSV file')
+    print_out('')
+    print_out('To use this script, you should have created your keyspace and Table name')
+    print_out('   -k     the keyspace of the collection')
+    print_out('   -t     the keyspace table name to insert the data')
+    print_out('')
+    print_out('Example:')
+    print_out('python cassandrainserter -k rainforest -k recordings -f ~/desktop/data.json')
+    print_out('')
+    print_out('Made by Rex Ijiekhuamen')
+    print_out('Because the University\'s VMS do not have internet access \n' +
+              'but we are somehow meant to insert tons of data to a database')
 
 
 if __name__ == '__main__':
@@ -148,4 +171,4 @@ if __name__ == '__main__':
                                 table=args_dict['TABLE'],
                                 data_path=args_dict['FILE'])
 
-    ins.show_queries()
+    ins.execute()
