@@ -13,7 +13,7 @@ def read_data(path):
 
 
 def c(*args):
-    text = ''
+    text = ""
     space = ' '
     for i in range(len(args)):
         if i == len(args) - 1:
@@ -95,8 +95,10 @@ class CassandraDataInserter:
             df = self.data
             try:
                 query = self.create_single_query(df.iloc[i])
-                print_out('Executing '+ query)
-                process = subprocess.Popen(args=c_arr(self.api, '-e', query),
+                c_query = c_arr(self.api, '-e', query)
+                print_out('Executing ' + query)
+                print(c_query)
+                process = subprocess.Popen(args=c_query,
                                            stdout=subprocess.PIPE,
                                            stderr=subprocess.PIPE,
                                            universal_newlines=True)
