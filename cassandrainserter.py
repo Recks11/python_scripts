@@ -36,8 +36,8 @@ def parse_data(dfs):
     for i in range(len(data)):
         dt = data[i]
         wrd = '\'' + str(data[i]) + '\''
-        if type(dt) != str:  # uncomment for python3.x
-            # if type(dt) != unicode:
+        # if type(dt) != str:  # uncomment for python3.x
+        if type(dt) != unicode:
             wrd = str(data[i])
 
         if i == len(data) - 1:
@@ -148,7 +148,7 @@ class BColors:
 
 
 def print_out(word, color=BColors.OKGREEN):
-    if verbose or color is BColors.OKGREEN:
+    if verbose or (color is BColors.OKGREEN or color is BColors.FAIL):
         print(color + word + BColors.ENDC)
 
 
@@ -159,9 +159,10 @@ def welcome_text():
     print_out('To use this script, you should have created your keyspace and Table name')
     print_out('   -k     the keyspace of the collection')
     print_out('   -t     the keyspace table name to insert the data')
+    print_out('   -v -V  verbose (show queries and all info  not just errors')
     print_out('')
     print_out('Example:')
-    print_out('python cassandrainserter -k rainforest -k recordings -f ~/desktop/data.json')
+    print_out('python cassandrainserter -v -k rainforest -k recordings -f ~/desktop/data.json')
     print_out('')
     print_out('Made by Rex Ijiekhuamen')
     print_out('Because the University\'s VMS do not have internet access \n' +
