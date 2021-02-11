@@ -91,30 +91,36 @@ class CassandraDataInserter:
     def create_single_query(self, data, query_type=None):
         return c('INSERT', 'INTO', self.get_db(), self.cols_str, 'VALUES', parse_data(data))
 
+    def execute_command(self, q):
+        c_query = c_arr(self.api, '-e', q)
+        print_out('Executing ' + q)
+        process = subprocess.Popen(args=c_query,
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE,
+                                   universal_newlines=True)
+        stdout, stderr = process.communicate()
+        if len(stderr) == 0:
+            print(stdout)
+            print_out('SUCCESS')
+        else:
+            print_out('Error: ' + stderr, BColors.FAIL)
+
     def execute(self, command='INSERT'):
+        df = self.data
         for i in range(len(self.data)):
-            process = None
-            df = self.data
             try:
                 query = self.create_single_query(df.iloc[i])
-                c_query = c_arr(self.api, '-e', query)
-                print_out('Executing ' + query)
-                process = subprocess.Popen(args=c_query,
-                                           stdout=subprocess.PIPE,
-                                           stderr=subprocess.PIPE,
-                                           universal_newlines=True)
-                stdout, stderr = process.communicate()
-                if len(stderr) == 0:
-                    print(stdout)
-                    print_out('SUCCESS')
-                else:
-                    print(stderr)
+                self.execute_command(query)
             except Exception as ex:
-                if ex.filename == self.api:
-                    print_out('Error: cqlsh not installed, please check your cassandraDB installation', BColors.WARNING)
-                if ex.message:
-                    print_out('Error executing query: ' + ex.message, BColors.WARNING)
+                if ex.args[1] == 'No such file or directory':
+                    print_out('Error: cqlsh not installed, please check your cassandraDB installation', BColors.FAIL)
+                if ex.message is not None:
+                    print_out('Error executing query: ' + ex.message, BColors.FAIL)
                 break
+        self.show_all()
+
+    def show_all(self):
+        self.execute_command(c('SELECT', '*', 'FROM', self.get_db()))
 
     def show_commands(self):
         for i in range(len(self.data)):
