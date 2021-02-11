@@ -36,7 +36,8 @@ def parse_data(dfs):
     for i in range(len(data)):
         dt = data[i]
         wrd = '\'' + str(data[i]) + '\''
-        if type(dt) != str:
+        # if type(dt) != str: # uncomment for python3.x
+        if type(dt) != unicode:
             wrd = str(data[i])
 
         if i == len(data) - 1:
@@ -92,6 +93,7 @@ class CassandraDataInserter:
 
     def execute(self, command='INSERT'):
         for i in range(len(self.data)):
+            process = None
             df = self.data
             try:
                 query = self.create_single_query(df.iloc[i])
@@ -108,9 +110,12 @@ class CassandraDataInserter:
                     print_out('SUCCESS')
                 else:
                     print(stderr)
-            except FileNotFoundError as ex:
+                process.terminate()
+            except Exception as ex:
                 if ex.filename == self.api:
                     print_out('Error: cqlsh not installed, please check your cassandraDB installation', BColors.WARNING)
+                if process is not None:
+                    process.terminate()
                 break
 
     def show_commands(self):
