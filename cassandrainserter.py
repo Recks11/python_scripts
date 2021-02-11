@@ -99,7 +99,6 @@ class CassandraDataInserter:
                 query = self.create_single_query(df.iloc[i])
                 c_query = c_arr(self.api, '-e', query)
                 print_out('Executing ' + query)
-                print(c_query)
                 process = subprocess.Popen(args=c_query,
                                            stdout=subprocess.PIPE,
                                            stderr=subprocess.PIPE,
@@ -110,12 +109,11 @@ class CassandraDataInserter:
                     print_out('SUCCESS')
                 else:
                     print(stderr)
-                process.terminate()
             except Exception as ex:
                 if ex.filename == self.api:
                     print_out('Error: cqlsh not installed, please check your cassandraDB installation', BColors.WARNING)
-                if process is not None:
-                    process.terminate()
+                if ex.message:
+                    print_out('Error executing query: ' + ex.message, BColors.WARNING)
                 break
 
     def show_commands(self):
