@@ -100,6 +100,7 @@ class CassandraDataInserter:
                                    universal_newlines=True)
         stdout, stderr = process.communicate()
         if len(stderr) == 0:
+            print(stdout)
             return True
         else:
             print_out('Error: ' + stderr, BColors.FAIL)
@@ -112,7 +113,10 @@ class CassandraDataInserter:
                 query = self.create_single_query(df.iloc[i])
                 response = self.execute_command(query)
                 if response:
-                    print_out('Successfully inserted' + df.iloc[i])
+                    print_out('Successfully inserted' + str(df.iloc[i]))
+                if not response:
+                    break
+
             except Exception as ex:
                 if ex.args[1] == 'No such file or directory':
                     print_out('Error: cqlsh not installed, please check your cassandraDB installation', BColors.FAIL)
