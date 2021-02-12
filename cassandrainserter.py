@@ -114,7 +114,7 @@ class CassandraDataInserter:
                 response = self.execute_command(query)
                 if response:
                     print_out('Successfully inserted' + str(df.iloc[i]))
-                if not response:
+                else:
                     break
 
             except Exception as ex:
