@@ -249,7 +249,7 @@ def user_input_welcome():
 def get_user_input(arg_dict):
     user_input_welcome()
     arg_dict[RunArgs.KEYSPACE] = raw_input('Please enter the keyspace: ')
-    arg_dict[RunArgs.TABLE] = raw_input('Please enter the keyspace: ')
+    arg_dict[RunArgs.TABLE] = raw_input('Please enter the Table: ')
     arg_dict[RunArgs.FILE] = raw_input('Please enter the path to file: ')
     res = raw_input('do you want verbose output? (y/n): ')
     clr = raw_input('do you want to clear the table first? (y/n): ')
