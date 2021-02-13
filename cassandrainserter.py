@@ -53,8 +53,8 @@ def parse_data(dfs):
     for i in range(len(data)):
         dt = data[i]
         wrd = '\'' + str(data[i]) + '\''
-        if type(dt) != str:  # uncomment for python3.x
-            # if type(dt) != unicode:
+        # if type(dt) != str:  # uncomment for python3.x
+        if type(dt) != unicode:
             wrd = str(data[i])
 
         if i == len(data) - 1:
