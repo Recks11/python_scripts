@@ -10,6 +10,8 @@ class RunArgs:
     INSERT = 'INSERT'
     SHOW = 'SHOW'
     CLEAR_TABLE = 'CLEAR'
+    INITDB = 'INIT_DB'
+    INITTABLE = 'INIT_TABLE'
 
 
 def read_data(path):
@@ -63,6 +65,19 @@ def parse_data(dfs):
     return out
 
 
+def parse_table(columns, data, pk=None):
+    out = "("
+    delim = ', '
+    for i in range(len(columns)):
+        typ = parse_type(data[columns[i]])
+        if columns[i].lower() == pk.lower():
+            typ = str(typ) + ' PRIMARY KEY'
+        if i == len(columns) - 1:
+            delim = ')'
+        out = out + str(columns[i]) + ' ' + typ + delim
+    return out
+
+
 def parse_columns(cols):
     """
         Takes a List of columns and converts them to the format
@@ -79,28 +94,33 @@ def parse_columns(cols):
 
 def parse_type(v):
     if v.dtype == bool:
-        return 'BOOLEAN'
-    if v.dtype == object:
-        return 'VARCHAR'
+        return 'boolean'
+    if v.dtype == (object or unicode or str):
+        return 'varchar'
     if v.dtype == int:
-        return 'INT'
+        return 'int'
     if v.dtype == float:
-        return 'DOUBLE'
+        return 'float'
 
 
 class QueryType:
     INSERT = 'INSERT'
     SELECT = 'SELECT'
     CLEAR = 'CLEAR'
+    TABLE = 'CREATE TABLE'
+    KEYSPACE = 'CREATE KEYSPACE'
 
 
 class QueryGenerator:
-    def __init__(self, db, table, data):
-        self.database = db
+    def __init__(self, db, table, ksp, data, pk=None):
         self.table_name = table
+        self.database = db
+        self.keyspace = ksp
         self.data = data
+        self.primary_key = pk
         self.cols_list = self.data.columns.to_list()
         self.columns = parse_columns(self.cols_list)
+
 
     def generate_query(self, query_type, data=None):
         if query_type == QueryType.INSERT:
@@ -109,6 +129,10 @@ class QueryGenerator:
             return self.gen_clear_query()
         if query_type == QueryType.SELECT:
             return self.gen_select_query()
+        if query_type == QueryType.TABLE:
+            return self.generate_table_query()
+        if query_type == QueryType.KEYSPACE:
+            return self.generate_keyspace_query()
 
     def gen_insert_query(self, data):
         return c('INSERT', 'INTO', self.database, self.columns, 'VALUES', parse_data(data))
@@ -118,6 +142,15 @@ class QueryGenerator:
 
     def gen_select_query(self):
         return c('SELECT', '*', 'FROM', self.database)
+
+    def generate_table_query(self):
+        table_cols = parse_table(self.cols_list, self.data, self.primary_key)
+        return c('CREATE', 'TABLE', self.database, table_cols)
+
+    def generate_keyspace_query(self):
+        return c('CREATE', 'KEYSPACE', self.keyspace, 'WITH', 'REPLICATION = '
+                                                              '{\'class\':\'SimpleStrategy\',\'replication_factor\':' +
+                 str(1) + '}')
 
 
 class CassandraDataInserter:
@@ -133,8 +166,10 @@ class CassandraDataInserter:
         if path is not None:
             self.data = read_data(path)
             self.query_gen = QueryGenerator(table=self.table_name,
+                                            ksp=self.keyspace,
                                             db=self.get_db(),
-                                            data=self.data)
+                                            data=self.data,
+                                            pk='Country')
 
     def get_db(self):
         return self.keyspace + '.' + self.table_name
@@ -143,8 +178,8 @@ class CassandraDataInserter:
         return self.query_gen.generate_query(query_type, data)
 
     def create_query_command(self, query):
-        return c_arr(self.api, '-e', query)
-        # return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
+        # return c_arr(self.api, '-e', query)
+        return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
 
     def execute_command(self, q_type=None, data=None):
         query = self.query_gen.generate_query(q_type, data=data)
@@ -163,7 +198,7 @@ class CassandraDataInserter:
             print_out('Error: ' + stderr, BColors.FAIL)
             return False
 
-    def execute(self, command=QueryType.INSERT):
+    def insert_data(self, command=QueryType.INSERT):
         df = self.data
         tot = len(self.data)
         for i in range(tot):
@@ -189,6 +224,12 @@ class CassandraDataInserter:
 
     def clear_db(self):
         _ = self.execute_command(q_type=QueryType.CLEAR)
+
+    def create_keyspace(self):
+        _ = self.execute_command(q_type=QueryType.KEYSPACE)
+
+    def create_table(self):
+        _ = self.execute_command(q_type=QueryType.TABLE)
 
     def show_commands(self):
         for i in range(len(self.data)):
@@ -226,13 +267,19 @@ def welcome_text():
     print('   -i | -I       to run INTERACTIVE SHELL')
     print('   -k            the keyspace of the collection')
     print('   -t            the keyspace table name to insert the data')
-    print('   --clear | -c  truncate/clear the table before inserting')
     print('   -v | -V       verbose (show queries and all info  not just errors')
+    print('   --clear | -c  truncate/clear the table before inserting')
+    print('   --init-db     initialise keyspace and table')
     print('')
     print('Example:')
-    print('python cassandrainserter -v -k rainforest -k recordings -f ~/desktop/data.json')
+    print('to add data from ~/Desktop/data.json to the keyspace rainforest and table recordings')
+    print('python cassandrainserter -k rainforest -k recordings -f ~/desktop/data.json -v')
     print('')
-    print('or')
+    print('to create the keyspace [rainforest] and the table name [recordings]')
+    print('and then add data from ~/Desktop/data.json')
+    print('python cassandrainserter -k rainforest -k recordings -f ~/desktop/data.json --clear --init-db -v')
+    print('')
+    print('or for INTERACTIVE MODE')
     print('python cassandrainserter -i')
     print('')
     print('Made by Rex Ijiekhuamen')
@@ -242,19 +289,24 @@ def welcome_text():
 
 
 def user_input_welcome():
-    print_out('Python cassandra inserter:')
-    print_out('')
+    print('Python cassandra inserter version 1.0')
 
 
 def get_user_input(arg_dict):
     user_input_welcome()
-    arg_dict[RunArgs.KEYSPACE] = raw_input('Please enter the keyspace: ')
-    arg_dict[RunArgs.TABLE] = raw_input('Please enter the Table: ')
-    arg_dict[RunArgs.FILE] = raw_input('Please enter the path to file: ')
-    res = raw_input('do you want verbose output? (y/n): ')
-    clr = raw_input('do you want to clear the table first? (y/n): ')
+    arg_dict[RunArgs.KEYSPACE] = raw_input('Please enter the keyspace: ').strip()
+    arg_dict[RunArgs.TABLE] = raw_input('Please enter the Table: ').strip()
+    create_db = raw_input('Do you want to automatically create the keyspace (y/n): ')
+    create_tbl = raw_input('Do you want to automatically create the Table (y/n): ')
+    arg_dict[RunArgs.FILE] = raw_input('Please enter the path to csv/json file: ').strip()
+    res = raw_input('do you want verbose output? (y/n): ').strip()
+    clr = raw_input('do you want to clear the table first? (y/n): ').strip()
+    print('')
+
     arg_dict[RunArgs.SHOW] = True if res.lower() == 'y' else False
     arg_dict[RunArgs.CLEAR_TABLE] = True if clr.lower() == 'y' else False
+    args_dict[RunArgs.INITDB] = True if create_db.lower() == 'y' else False
+    args_dict[RunArgs.INITTABLE] = True if create_tbl.lower() == 'y' else False
     return arg_dict
 
 
@@ -265,13 +317,20 @@ def read_manual_input(args):
             RunArgs.TABLE: args[args.index('-t') + 1],
             RunArgs.FILE: args[args.index('-f') + 1],
             RunArgs.CLEAR_TABLE: False,
-            RunArgs.SHOW: False
+            RunArgs.SHOW: False,
+            RunArgs.INITDB: False,
+            RunArgs.INITTABLE: False
         }
         if args.__contains__('--clear' or '-c'):
             _args_dict[RunArgs.CLEAR_TABLE] = True
 
         if args.__contains__('-v' or '-V'):
             _args_dict[RunArgs.SHOW] = True
+
+        if args.__contains__('--db-init'):
+            _args_dict[RunArgs.INITTABLE] = True
+            _args_dict[RunArgs.INITDB] = True
+
         return _args_dict
 
     except Exception as e:
@@ -301,8 +360,14 @@ if __name__ == '__main__':
                                 table=args_dict[RunArgs.TABLE],
                                 data_path=args_dict[RunArgs.FILE])
 
+    if args_dict[RunArgs.INITDB]:
+        ins.create_keyspace()
+
+    if args_dict[RunArgs.INITTABLE]:
+        ins.create_table()
+
     if args_dict[RunArgs.CLEAR_TABLE]:
         ins.clear_db()
-    if args_dict[RunArgs.INSERT]:
-        ins.execute()
 
+    if args_dict[RunArgs.INSERT]:
+        ins.insert_data()
