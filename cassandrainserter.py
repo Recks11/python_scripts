@@ -325,7 +325,7 @@ def read_manual_input(args):
         if args.__contains__('-v' or '-V'):
             _args_dict[RunArgs.SHOW] = True
 
-        if args.__contains__('--db-init'):
+        if args.__contains__('--init-db'):
             _args_dict[RunArgs.INITTABLE] = True
             _args_dict[RunArgs.INITDB] = True
 
