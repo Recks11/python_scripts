@@ -121,7 +121,6 @@ class QueryGenerator:
         self.cols_list = self.data.columns.to_list()
         self.columns = parse_columns(self.cols_list)
 
-
     def generate_query(self, query_type, data=None):
         if query_type == QueryType.INSERT:
             return self.gen_insert_query(data)
@@ -148,9 +147,8 @@ class QueryGenerator:
         return c('CREATE', 'TABLE', self.database, table_cols)
 
     def generate_keyspace_query(self):
-        return c('CREATE', 'KEYSPACE', self.keyspace, 'WITH', 'REPLICATION = '
-                                                              '{\'class\':\'SimpleStrategy\',\'replication_factor\':' +
-                 str(1) + '}')
+        return c('CREATE', 'KEYSPACE', self.keyspace, 'WITH', 'REPLICATION =',
+                 '{\'class\':\'SimpleStrategy\',\'replication_factor\':' + str(1) + '}')
 
 
 class CassandraDataInserter:
@@ -178,8 +176,8 @@ class CassandraDataInserter:
         return self.query_gen.generate_query(query_type, data)
 
     def create_query_command(self, query):
-        # return c_arr(self.api, '-e', query)
-        return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
+        return c_arr(self.api, '-e', query)
+        # return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
 
     def execute_command(self, q_type=None, data=None):
         query = self.query_gen.generate_query(q_type, data=data)
