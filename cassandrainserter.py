@@ -12,6 +12,7 @@ class RunArgs:
     CLEAR_TABLE = 'CLEAR'
     INITDB = 'INIT_DB'
     INITTABLE = 'INIT_TABLE'
+    PK = 'PK'
 
 
 def read_data(path):
@@ -50,13 +51,13 @@ def parse_data(dfs):
         ('value1', 'value2', 3, false, 'value5')
     """
     data = dfs.array
-    out = '('
-    delimiter = ', '
+    out = "("
+    delimiter = ", "
     for i in range(len(data)):
         dt = data[i]
-        wrd = '\'' + str(data[i]) + '\''
-        if type(dt) != (str or unicode):
-            wrd = str(data[i])
+        wrd = str(data[i])
+        if (type(dt) == unicode) or (type(dt) == str):
+            wrd = "'" + str(data[i]) + "'"
 
         if i == len(data) - 1:
             delimiter = ')'
@@ -152,13 +153,14 @@ class QueryGenerator:
 
 
 class CassandraDataInserter:
-    def __init__(self, keyspace, table, data_path=None):
+    def __init__(self, keyspace, table, data_path=None, pk=None):
         self.data = None
         self.keyspace = keyspace
         self.table_name = table
         self.query_gen = None
-        self.init_data(data_path)
+        self.prim_key = pk
         self.api = 'cqlsh'
+        self.init_data(data_path)
 
     def init_data(self, path=None):
         if path is not None:
@@ -167,7 +169,7 @@ class CassandraDataInserter:
                                             ksp=self.keyspace,
                                             db=self.get_db(),
                                             data=self.data,
-                                            pk='Country')
+                                            pk=self.prim_key)
 
     def get_db(self):
         return self.keyspace + '.' + self.table_name
@@ -176,8 +178,8 @@ class CassandraDataInserter:
         return self.query_gen.generate_query(query_type, data)
 
     def create_query_command(self, query):
-        return c_arr(self.api, '-e', query)
-        # return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
+        # return c_arr(self.api, '-e', query)
+        return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
 
     def execute_command(self, q_type=None, data=None):
         query = self.query_gen.generate_query(q_type, data=data)
@@ -268,6 +270,7 @@ def welcome_text():
     print('   -v | -V       verbose (show queries and all info  not just errors')
     print('   --clear | -c  truncate/clear the table before inserting')
     print('   --init-db     initialise keyspace and table')
+    print('   -pk           used with --init-db specify the name of the primary key column')
     print('')
     print('Example:')
     print('to add data from ~/Desktop/data.json to the keyspace rainforest and table recordings')
@@ -305,6 +308,9 @@ def get_user_input(arg_dict):
     arg_dict[RunArgs.CLEAR_TABLE] = True if clr.lower() == 'y' else False
     args_dict[RunArgs.INITDB] = True if create_db.lower() == 'y' else False
     args_dict[RunArgs.INITTABLE] = True if create_tbl.lower() == 'y' else False
+
+    if create_tbl:
+        arg_dict[RunArgs.PK] = raw_input('please enter the column name of the primary key: ')
     return arg_dict
 
 
@@ -317,7 +323,8 @@ def read_manual_input(args):
             RunArgs.CLEAR_TABLE: False,
             RunArgs.SHOW: False,
             RunArgs.INITDB: False,
-            RunArgs.INITTABLE: False
+            RunArgs.INITTABLE: False,
+            RunArgs.PK: None
         }
         if args.__contains__('--clear' or '-c'):
             _args_dict[RunArgs.CLEAR_TABLE] = True
@@ -328,6 +335,7 @@ def read_manual_input(args):
         if args.__contains__('--init-db'):
             _args_dict[RunArgs.INITTABLE] = True
             _args_dict[RunArgs.INITDB] = True
+            _args_dict[RunArgs.PK] = args[args.index('-pk') + 1],
 
         return _args_dict
 
@@ -344,6 +352,7 @@ if __name__ == '__main__':
         RunArgs.KEYSPACE: 'None',
         RunArgs.TABLE: None,
         RunArgs.FILE: None,
+        RunArgs.PK: None
     }
 
     if arguments.__contains__('-i') | arguments.__contains__('-I'):
@@ -356,7 +365,8 @@ if __name__ == '__main__':
 
     ins = CassandraDataInserter(keyspace=args_dict[RunArgs.KEYSPACE],
                                 table=args_dict[RunArgs.TABLE],
-                                data_path=args_dict[RunArgs.FILE])
+                                data_path=args_dict[RunArgs.FILE],
+                                pk=args_dict[RunArgs.PK])
 
     if args_dict[RunArgs.INITDB]:
         ins.create_keyspace()
