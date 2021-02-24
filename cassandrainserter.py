@@ -178,8 +178,8 @@ class CassandraDataInserter:
         return self.query_gen.generate_query(query_type, data)
 
     def create_query_command(self, query):
-        # return c_arr(self.api, '-e', query)
-        return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
+        return c_arr(self.api, '-e', query)
+        # return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
 
     def execute_command(self, q_type=None, data=None):
         query = self.query_gen.generate_query(q_type, data=data)
