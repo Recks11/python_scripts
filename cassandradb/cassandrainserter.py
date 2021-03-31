@@ -2,7 +2,6 @@ import sys
 import subprocess
 import pandas as pd
 
-
 class RunArgs:
     KEYSPACE = 'KEYSPACE'
     TABLE = 'TABLE'
@@ -13,6 +12,7 @@ class RunArgs:
     INITDB = 'INIT_DB'
     INITTABLE = 'INIT_TABLE'
     PK = 'PK'
+    LIST_INDEX = 'LIST_INDEX'
 
 
 def read_data(path):
@@ -44,23 +44,43 @@ def c_arr(*args):
     return array
 
 
-def parse_data(dfs):
+def parse_data(dfs, delims=('(', ')')):
     """
         Takes a Dataframe and generates values for an insert query
         output like
         ('value1', 'value2', 3, false, 'value5')
     """
     data = dfs.array
-    out = "("
+    out = "" + delims[0]
     delimiter = ", "
     for i in range(len(data)):
         dt = data[i]
         wrd = str(data[i])
-        if (type(dt) == unicode) or (type(dt) == str):
-            wrd = "'" + str(data[i]) + "'"
+        if list_index.__contains__(i):
+            wrd = parse_list_data(data[i].split(','))
+        else:
+            if (type(dt) == unicode) or (type(dt) == str):
+                wrd = "'" + str(data[i]).replace('\'', '\'\'') + "'"
 
         if i == len(data) - 1:
-            delimiter = ')'
+            delimiter = delims[1]
+
+        out = out + wrd + delimiter
+    return out
+
+
+def parse_list_data(arr):
+    out = "["
+    delimiter = ", "
+    rng = min(3, len(arr))
+    for i in range(rng):
+        dt = arr[i]
+        wrd = str(arr[i])
+        if (type(dt) == unicode) or (type(dt) == str):
+            wrd = "'" + str(arr[i]).replace('\'', '\'\'') + "'"
+
+        if i == rng - 1:
+            delimiter = ']'
 
         out = out + wrd + delimiter
     return out
@@ -70,7 +90,9 @@ def parse_table(columns, data, pk=None):
     out = "("
     delim = ', '
     for i in range(len(columns)):
-        typ = parse_type(data[columns[i]])
+        colm = data[columns[i]]
+        typ = parse_type(colm, ins.list_cols.__contains__(columns[i]))
+        print(typ)
         if columns[i].lower() == pk.lower():
             typ = str(typ) + ' PRIMARY KEY'
         if i == len(columns) - 1:
@@ -93,11 +115,13 @@ def parse_columns(cols):
     return t
 
 
-def parse_type(v):
+def parse_type(v, is_list=False):
+    if is_list:
+        return 'list<text>'
     if v.dtype == bool:
         return 'boolean'
     if v.dtype == (object or unicode or str):
-        return 'varchar'
+        return 'text'
     if v.dtype == int:
         return 'int'
     if v.dtype == float:
@@ -145,7 +169,7 @@ class QueryGenerator:
 
     def generate_table_query(self):
         table_cols = parse_table(self.cols_list, self.data, self.primary_key)
-        return c('CREATE', 'TABLE', self.database, table_cols)
+        return c('CREATE', 'TA_BLE', self.database, table_cols)
 
     def generate_keyspace_query(self):
         return c('CREATE', 'KEYSPACE', self.keyspace, 'WITH', 'REPLICATION =',
@@ -161,6 +185,7 @@ class CassandraDataInserter:
         self.prim_key = pk
         self.api = 'cqlsh'
         self.init_data(data_path)
+        self.list_cols = None
 
     def init_data(self, path=None):
         if path is not None:
@@ -170,6 +195,10 @@ class CassandraDataInserter:
                                             db=self.get_db(),
                                             data=self.data,
                                             pk=self.prim_key)
+            list_idx = args_dict[RunArgs.LIST_INDEX]
+            self.list_cols = []
+            for idx in list_idx:
+                self.list_cols.append(self.data.columns[idx])
 
     def get_db(self):
         return self.keyspace + '.' + self.table_name
@@ -300,6 +329,9 @@ def get_user_input(arg_dict):
     create_db = raw_input('Do you want to automatically create the keyspace (y/n): ')
     create_tbl = raw_input('Do you want to automatically create the Table (y/n): ')
     arg_dict[RunArgs.FILE] = raw_input('Please enter the path to csv/json file: ').strip()
+    lists_exist = raw_input('are there lists in the db (y/n): ')
+    if lists_exist.lower() == 'y':
+        arg_dict[RunArgs.LIST_INDEX] = list(map(int, raw_input('enter indexes separated by comma e.g 1,2,3')))
     res = raw_input('do you want verbose output? (y/n): ').strip()
     clr = raw_input('do you want to clear the table first? (y/n): ').strip()
     print('')
@@ -324,7 +356,7 @@ def read_manual_input(args):
             RunArgs.SHOW: False,
             RunArgs.INITDB: False,
             RunArgs.INITTABLE: False,
-            RunArgs.PK: None
+            RunArgs.PK: None,
         }
         if args.__contains__('--clear' or '-c'):
             _args_dict[RunArgs.CLEAR_TABLE] = True
@@ -336,6 +368,9 @@ def read_manual_input(args):
             _args_dict[RunArgs.INITTABLE] = True
             _args_dict[RunArgs.INITDB] = True
             _args_dict[RunArgs.PK] = args[args.index('-pk') + 1],
+
+        if args.__contains__('--list-index'):
+            _args_dict[RunArgs.LIST_INDEX] = list(map(int, args[args.index('--list-index') + 1].split(',')))
 
         return _args_dict
 
@@ -362,7 +397,7 @@ if __name__ == '__main__':
 
     verbose = args_dict[RunArgs.SHOW]
     args_dict[RunArgs.INSERT] = True
-
+    list_index = args_dict[RunArgs.LIST_INDEX]
     ins = CassandraDataInserter(keyspace=args_dict[RunArgs.KEYSPACE],
                                 table=args_dict[RunArgs.TABLE],
                                 data_path=args_dict[RunArgs.FILE],
