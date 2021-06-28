@@ -1,0 +1,482 @@
+[
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64e3",
+    "first_listen": "2018-08-12T05:29:29 -01:00",
+    "last_listen": "2021-03-06T09:36:51 -00:00",
+    "listen_duration": 388807,
+    "n_listens": 82
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64f2",
+    "first_listen": "2017-10-10T12:16:01 -01:00",
+    "last_listen": "2021-02-03T08:24:43 -00:00",
+    "listen_duration": 759942,
+    "n_listens": 34
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64f2",
+    "first_listen": "2019-06-29T05:58:47 -01:00",
+    "last_listen": "2021-01-08T03:24:55 -00:00",
+    "listen_duration": 743525,
+    "n_listens": 99
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64f4",
+    "first_listen": "2017-06-28T02:17:13 -01:00",
+    "last_listen": "2021-02-03T02:10:20 -00:00",
+    "listen_duration": 782088,
+    "n_listens": 42
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64f0",
+    "first_listen": "2018-06-27T03:55:21 -01:00",
+    "last_listen": "2021-02-04T06:38:33 -00:00",
+    "listen_duration": 109963,
+    "n_listens": 44
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64eb",
+    "first_listen": "2017-03-10T07:19:40 -00:00",
+    "last_listen": "2021-02-05T03:20:57 -00:00",
+    "listen_duration": 671609,
+    "n_listens": 14
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64f4",
+    "first_listen": "2019-01-20T10:40:15 -00:00",
+    "last_listen": "2021-01-01T09:23:45 -00:00",
+    "listen_duration": 642413,
+    "n_listens": 92
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64e5",
+    "first_listen": "2019-03-11T08:21:53 -00:00",
+    "last_listen": "2021-02-21T06:40:07 -00:00",
+    "listen_duration": 790577,
+    "n_listens": 48
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64ef",
+    "first_listen": "2018-05-19T03:52:42 -01:00",
+    "last_listen": "2021-03-25T04:05:49 -00:00",
+    "listen_duration": 261037,
+    "n_listens": 53
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64fb",
+    "first_listen": "2017-08-07T06:34:50 -01:00",
+    "last_listen": "2021-03-10T04:08:54 -00:00",
+    "listen_duration": 145023,
+    "n_listens": 26
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64e6",
+    "first_listen": "2019-05-28T01:00:48 -01:00",
+    "last_listen": "2021-02-26T07:07:39 -00:00",
+    "listen_duration": 298045,
+    "n_listens": 35
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64f1",
+    "first_listen": "2017-08-09T06:58:30 -01:00",
+    "last_listen": "2021-02-18T06:44:20 -00:00",
+    "listen_duration": 404481,
+    "n_listens": 74
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64f4",
+    "first_listen": "2017-10-17T05:03:37 -01:00",
+    "last_listen": "2021-03-08T09:25:23 -00:00",
+    "listen_duration": 628404,
+    "n_listens": 6
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64e6",
+    "first_listen": "2018-09-26T02:57:55 -01:00",
+    "last_listen": "2021-01-31T04:52:10 -00:00",
+    "listen_duration": 364454,
+    "n_listens": 70
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64e1",
+    "first_listen": "2019-04-12T10:43:19 -01:00",
+    "last_listen": "2021-01-29T04:14:41 -00:00",
+    "listen_duration": 625266,
+    "n_listens": 75
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64e9",
+    "first_listen": "2018-12-09T07:32:29 -00:00",
+    "last_listen": "2021-03-19T11:14:40 -00:00",
+    "listen_duration": 584943,
+    "n_listens": 47
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64eb",
+    "first_listen": "2017-01-15T04:02:41 -00:00",
+    "last_listen": "2021-02-22T01:08:37 -00:00",
+    "listen_duration": 727352,
+    "n_listens": 93
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64ed",
+    "first_listen": "2017-12-24T05:18:31 -00:00",
+    "last_listen": "2021-03-29T03:12:15 -01:00",
+    "listen_duration": 198803,
+    "n_listens": 88
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64e1",
+    "first_listen": "2017-05-24T12:35:24 -01:00",
+    "last_listen": "2021-02-17T12:06:52 -00:00",
+    "listen_duration": 144573,
+    "n_listens": 32
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64f2",
+    "first_listen": "2019-03-21T04:31:28 -00:00",
+    "last_listen": "2021-01-09T06:06:28 -00:00",
+    "listen_duration": 541707,
+    "n_listens": 8
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64d8",
+    "first_listen": "2019-02-06T08:29:19 -00:00",
+    "last_listen": "2021-01-12T07:46:38 -00:00",
+    "listen_duration": 222118,
+    "n_listens": 73
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64e9",
+    "first_listen": "2017-07-31T07:32:41 -01:00",
+    "last_listen": "2021-02-03T03:51:26 -00:00",
+    "listen_duration": 545508,
+    "n_listens": 56
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64e6",
+    "first_listen": "2019-03-17T06:52:21 -00:00",
+    "last_listen": "2021-02-13T07:55:34 -00:00",
+    "listen_duration": 175579,
+    "n_listens": 70
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64ef",
+    "first_listen": "2019-02-18T07:13:29 -00:00",
+    "last_listen": "2021-01-17T11:07:03 -00:00",
+    "listen_duration": 167813,
+    "n_listens": 7
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64d9",
+    "first_listen": "2019-02-27T03:28:30 -00:00",
+    "last_listen": "2021-01-10T02:22:58 -00:00",
+    "listen_duration": 242139,
+    "n_listens": 27
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64f6",
+    "first_listen": "2019-02-15T05:37:35 -00:00",
+    "last_listen": "2021-02-28T05:54:54 -00:00",
+    "listen_duration": 793123,
+    "n_listens": 8
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64ec",
+    "first_listen": "2017-03-09T11:35:51 -00:00",
+    "last_listen": "2021-03-27T06:40:01 -00:00",
+    "listen_duration": 322288,
+    "n_listens": 100
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64f4",
+    "first_listen": "2019-01-05T05:14:08 -00:00",
+    "last_listen": "2021-02-12T07:41:35 -00:00",
+    "listen_duration": 690926,
+    "n_listens": 52
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64df",
+    "first_listen": "2018-12-08T03:27:34 -00:00",
+    "last_listen": "2021-03-13T08:59:00 -00:00",
+    "listen_duration": 270956,
+    "n_listens": 84
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64f6",
+    "first_listen": "2017-08-30T05:40:37 -01:00",
+    "last_listen": "2021-02-21T08:58:22 -00:00",
+    "listen_duration": 171454,
+    "n_listens": 86
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64e4",
+    "first_listen": "2019-12-10T04:42:10 -00:00",
+    "last_listen": "2021-01-13T04:26:32 -00:00",
+    "listen_duration": 463282,
+    "n_listens": 16
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64e5",
+    "first_listen": "2018-07-09T05:44:44 -01:00",
+    "last_listen": "2021-01-16T05:50:53 -00:00",
+    "listen_duration": 443580,
+    "n_listens": 47
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64db",
+    "first_listen": "2019-04-30T06:32:19 -01:00",
+    "last_listen": "2021-03-18T07:48:24 -00:00",
+    "listen_duration": 384175,
+    "n_listens": 35
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64dc",
+    "first_listen": "2019-11-05T09:37:17 -00:00",
+    "last_listen": "2021-01-25T09:48:31 -00:00",
+    "listen_duration": 411310,
+    "n_listens": 40
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64e7",
+    "first_listen": "2019-04-17T02:53:52 -01:00",
+    "last_listen": "2021-02-27T05:23:01 -00:00",
+    "listen_duration": 575541,
+    "n_listens": 97
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64e6",
+    "first_listen": "2017-08-24T10:58:37 -01:00",
+    "last_listen": "2021-02-01T04:29:21 -00:00",
+    "listen_duration": 159389,
+    "n_listens": 53
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64fc",
+    "first_listen": "2019-11-29T02:16:52 -00:00",
+    "last_listen": "2021-02-16T01:09:58 -00:00",
+    "listen_duration": 654885,
+    "n_listens": 68
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64db",
+    "first_listen": "2019-08-08T07:18:39 -01:00",
+    "last_listen": "2021-01-31T01:23:14 -00:00",
+    "listen_duration": 347659,
+    "n_listens": 63
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64e6",
+    "first_listen": "2019-02-25T10:10:58 -00:00",
+    "last_listen": "2021-03-09T11:35:42 -00:00",
+    "listen_duration": 615470,
+    "n_listens": 58
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64d8",
+    "first_listen": "2018-04-09T05:33:26 -01:00",
+    "last_listen": "2021-03-25T01:16:57 -00:00",
+    "listen_duration": 423837,
+    "n_listens": 48
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64e1",
+    "first_listen": "2017-05-16T06:24:06 -01:00",
+    "last_listen": "2021-02-23T10:53:19 -00:00",
+    "listen_duration": 466469,
+    "n_listens": 37
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64f5",
+    "first_listen": "2017-01-23T05:45:32 -00:00",
+    "last_listen": "2021-03-26T01:49:42 -00:00",
+    "listen_duration": 94910,
+    "n_listens": 89
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64df",
+    "first_listen": "2017-04-16T03:36:45 -01:00",
+    "last_listen": "2021-03-25T06:49:45 -00:00",
+    "listen_duration": 164733,
+    "n_listens": 95
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64f6",
+    "first_listen": "2018-09-16T06:57:51 -01:00",
+    "last_listen": "2021-01-21T10:46:37 -00:00",
+    "listen_duration": 726997,
+    "n_listens": 75
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64f6",
+    "first_listen": "2018-01-18T06:27:35 -00:00",
+    "last_listen": "2021-02-26T09:10:41 -00:00",
+    "listen_duration": 465250,
+    "n_listens": 12
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64db",
+    "first_listen": "2017-07-20T02:06:47 -01:00",
+    "last_listen": "2021-02-10T01:54:39 -00:00",
+    "listen_duration": 719875,
+    "n_listens": 83
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64f1",
+    "first_listen": "2017-06-13T12:02:10 -01:00",
+    "last_listen": "2021-01-06T04:20:25 -00:00",
+    "listen_duration": 313803,
+    "n_listens": 75
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64fa",
+    "first_listen": "2019-07-20T12:02:52 -01:00",
+    "last_listen": "2021-01-30T03:13:45 -00:00",
+    "listen_duration": 576190,
+    "n_listens": 97
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64df",
+    "first_listen": "2017-01-04T07:32:59 -00:00",
+    "last_listen": "2021-02-26T10:14:22 -00:00",
+    "listen_duration": 209107,
+    "n_listens": 80
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64ff",
+    "first_listen": "2017-08-17T07:32:21 -01:00",
+    "last_listen": "2021-03-02T07:51:05 -00:00",
+    "listen_duration": 480093,
+    "n_listens": 74
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64de",
+    "first_listen": "2017-04-04T11:25:00 -01:00",
+    "last_listen": "2021-02-26T08:53:35 -00:00",
+    "listen_duration": 317821,
+    "n_listens": 77
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64de",
+    "first_listen": "2017-07-20T06:01:37 -01:00",
+    "last_listen": "2021-01-04T08:25:56 -00:00",
+    "listen_duration": 781162,
+    "n_listens": 64
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64ec",
+    "first_listen": "2019-07-23T07:27:27 -01:00",
+    "last_listen": "2021-02-01T10:35:45 -00:00",
+    "listen_duration": 690011,
+    "n_listens": 50
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64e6",
+    "first_listen": "2018-12-08T03:33:54 -00:00",
+    "last_listen": "2021-01-07T10:42:11 -00:00",
+    "listen_duration": 150988,
+    "n_listens": 50
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64e9",
+    "first_listen": "2019-05-05T11:51:56 -01:00",
+    "last_listen": "2021-01-29T09:27:02 -00:00",
+    "listen_duration": 727087,
+    "n_listens": 9
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64f0",
+    "first_listen": "2017-10-15T06:30:45 -01:00",
+    "last_listen": "2021-03-03T11:01:07 -00:00",
+    "listen_duration": 206588,
+    "n_listens": 48
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994478e",
+    "songid": "6064ac3f5074454de38c64e6",
+    "first_listen": "2018-11-06T03:40:02 -00:00",
+    "last_listen": "2021-02-25T06:51:19 -00:00",
+    "listen_duration": 426435,
+    "n_listens": 96
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64fa",
+    "first_listen": "2019-10-09T09:58:13 -01:00",
+    "last_listen": "2021-03-02T02:31:27 -00:00",
+    "listen_duration": 415075,
+    "n_listens": 92
+  },
+  {
+    "userid": "820fee42-e3bf-4b23-8ebf-b674c994445A",
+    "songid": "6064ac3f5074454de38c64f4",
+    "first_listen": "2019-06-30T11:42:01 -01:00",
+    "last_listen": "2021-02-24T10:27:03 -00:00",
+    "listen_duration": 132058,
+    "n_listens": 87
+  },
+  {
+    "userid": "220fee42-e3bf-4b23-8ebf-b674c994493g",
+    "songid": "6064ac3f5074454de38c64f4",
+    "first_listen": "2018-03-18T12:14:07 -00:00",
+    "last_listen": "2021-02-03T03:43:32 -00:00",
+    "listen_duration": 391791,
+    "n_listens": 35
+  }
+]

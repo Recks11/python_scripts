@@ -1,6 +1,20 @@
 import sys
 import subprocess
 import pandas as pd
+import threading as th
+import time
+
+
+class Logger:
+    def __init__(self):
+        self.count = 0
+
+    def initiate_log(self):
+        self.count += 1
+
+    def on_log(self, total):
+        print_out('Inserted ' + str(self.count) + '/' + str(total), BColors.OKBLUE)
+
 
 class RunArgs:
     KEYSPACE = 'KEYSPACE'
@@ -70,7 +84,7 @@ def parse_data(dfs, delims=('(', ')')):
 
 
 def parse_list_data(arr):
-    out = "["
+    out = "{"
     delimiter = ", "
     rng = min(3, len(arr))
     for i in range(rng):
@@ -80,7 +94,7 @@ def parse_list_data(arr):
             wrd = "'" + str(arr[i]).replace('\'', '\'\'') + "'"
 
         if i == rng - 1:
-            delimiter = ']'
+            delimiter = '}'
 
         out = out + wrd + delimiter
     return out
@@ -117,7 +131,7 @@ def parse_columns(cols):
 
 def parse_type(v, is_list=False):
     if is_list:
-        return 'list<text>'
+        return 'set<text>'
     if v.dtype == bool:
         return 'boolean'
     if v.dtype == (object or unicode or str):
@@ -126,6 +140,8 @@ def parse_type(v, is_list=False):
         return 'int'
     if v.dtype == float:
         return 'float'
+    if (v.dtype == '<M8[ns]') or (v.dtype == 'datetime64[ns]'):
+        return 'date'
 
 
 class QueryType:
@@ -207,8 +223,8 @@ class CassandraDataInserter:
         return self.query_gen.generate_query(query_type, data)
 
     def create_query_command(self, query):
-        return c_arr(self.api, '-e', query)
-        # return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
+        # return c_arr(self.api, '-e', query)
+        return c_arr('docker', 'exec', '-i', 'cassandradb', self.api, '-e', query)
 
     def execute_command(self, q_type=None, data=None):
         query = self.query_gen.generate_query(q_type, data=data)
@@ -227,9 +243,16 @@ class CassandraDataInserter:
             print_out('Error: ' + stderr, BColors.FAIL)
             return False
 
-    def insert_data(self, command=QueryType.INSERT):
-        df = self.data
-        tot = len(self.data)
+    def insert_data(self, command=QueryType.INSERT, n_split=1, idx=1):
+        print(len(self.data), '/', n_split)
+        ln = len(self.data) / n_split
+        start = idx * ln
+        end = (idx + 1) * ln
+        if idx == (n_split - 1):
+            end = max(end, len(self.data))
+        df = self.data.iloc[start:end]
+        tot = len(df)
+        print ('total', tot, 'start', start, 'end', end, 'ln', ln)
         for i in range(tot):
             try:
                 print_out('Inserting ' + str(i + 1) + '/' + str(tot), BColors.OKBLUE)
@@ -302,12 +325,12 @@ def welcome_text():
     print('   -pk           used with --init-db specify the name of the primary key column')
     print('')
     print('Example:')
-    print('to add data from ~/Desktop/data.json to the keyspace rainforest and table recordings')
-    print('python cassandrainserter -k rainforest -k recordings -f ~/desktop/data.json -v')
+    print('to add data from ~/Desktop/listens_data.json to the keyspace rainforest and table recordings')
+    print('python cassandrainserter -k rainforest -k recordings -f ~/desktop/listens_data.json -v')
     print('')
     print('to create the keyspace [rainforest] and the table name [recordings]')
-    print('and then add data from ~/Desktop/data.json')
-    print('python cassandrainserter -k rainforest -k recordings -f ~/desktop/data.json --clear --init-db -v')
+    print('and then add data from ~/Desktop/listens_data.json')
+    print('python cassandrainserter -k rainforest -k recordings -f ~/desktop/listens_data.json --clear --init-db -v')
     print('')
     print('or for INTERACTIVE MODE')
     print('python cassandrainserter -i')
@@ -379,6 +402,16 @@ def read_manual_input(args):
         exit()
 
 
+def insert(n=5):
+    for i in range(n):
+        try:
+            print(n, i)
+            th.Thread(target=ins.insert_data, args=[QueryType.INSERT, n, i]).start()
+            time.sleep(1)
+        except Exception as e:
+            print_out(e)
+
+
 verbose = False
 
 if __name__ == '__main__':
@@ -413,4 +446,4 @@ if __name__ == '__main__':
         ins.clear_db()
 
     if args_dict[RunArgs.INSERT]:
-        ins.insert_data()
+        insert(5)
